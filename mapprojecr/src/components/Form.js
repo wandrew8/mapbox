@@ -25,27 +25,31 @@ export default function FormComponent(props) {
 
   return (
       <div className="formContainer">
-        <form 
-            onSubmit={submitForm}
-            className={classes.root} 
-            autoComplete="off">
-            <TextField 
-            id="outlined-number"
-            label="Zip Code"
-            type="zipcode"
-            value={zipCode}
-            onChange={e => setZipCode(e.target.value)}
-            InputLabelProps={{
-                shrink: true,
-            }}
-            variant="outlined"
-            />
-            <div className="buttonHolder">
-                <Button type="submit" variant="outlined" color="primary">
-                    Find on Map
-                </Button>
-            </div>
-        </form>
+        <div className="container">
+            <h2>YOU ARE IN</h2>
+            <h1>{props.city}, {props.state}</h1>
+            <form 
+                onSubmit={submitForm}
+                className={classes.root} 
+                autoComplete="off">
+                <TextField 
+                id="outlined-number"
+                label="Zip Code"
+                type="zipcode"
+                value={zipCode}
+                onChange={e => setZipCode(e.target.value)}
+                InputLabelProps={{
+                    shrink: true,
+                }}
+                variant="outlined"
+                />
+                <div id="buttonHolder">
+                    <Button type="submit" variant="outlined" color="primary">
+                        Find on Map
+                    </Button>
+                </div>
+            </form>
+        </div>
       </div>
   );
 }

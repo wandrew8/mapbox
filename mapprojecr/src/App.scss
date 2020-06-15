@@ -3,13 +3,10 @@
   padding: 2rem;
   max-width: 1200px;
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 2fr;
   grid-gap: 1rem;
   height: 100vh;
-  @media (max-width: 576px) { 
-    grid-template-columns: 1fr;
-
-   }
 }
 
 .icon {
@@ -47,13 +44,23 @@
   z-index: 100;
 }
 
-.formContainer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.article {
+  margin: 1rem 0.5rem;
 }
 
-.buttonHolder {
+.grid-inside {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: 1fr 1fr;
+  
+}
+
+#buttonHolder {
   text-align: center;
   width: 100%;
+}
+
+.container {
+  text-align: center;
 }

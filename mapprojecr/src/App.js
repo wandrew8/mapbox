@@ -7,6 +7,7 @@ import './App.scss';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_KEY;
 
+
 export default class App extends React.Component {
     constructor(props) {
       super(props);
@@ -14,8 +15,9 @@ export default class App extends React.Component {
         lng: -122.34, 
         lat: 47.61,
         zoom: 10,
-        city: '',
-        state: '',
+        city: 'Seattle',
+        state: 'WA',
+        searchInfo: []
       }
     }
 
@@ -38,11 +40,16 @@ export default class App extends React.Component {
 
     componentDidMount() {
       this.getMap();
+      this.getCityInfo();
     }
 
     showFullScreen = () => {
       this.mapContainer.classList.toggle("fullScreen");
       this.getMap();
+    }
+
+    createMarkup(html) {
+      return {__html: html};
     }
 
     getCoordinates = (zipCode) => {
@@ -61,6 +68,7 @@ export default class App extends React.Component {
           lng: data.lng
         }, () => {
           this.getMap();
+          this.getCityInfo();
         })
       })
       .catch((error) => {
@@ -68,12 +76,33 @@ export default class App extends React.Component {
       });
     }
 
+    getCityInfo = () => {
+      fetch(`https://cors-anywhere.herokuapp.com/http://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${this.state.city}&format=json`)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        this.setState({ searchInfo: data.query.search})
+      })
+      .catch(err => console.log(err))
+    }
+
     render() {
         return (
           <div className="grid">
-            <FormComponent 
-              getCoordinates={this.getCoordinates}
-            />
+            <div className="grid-inside">
+              <FormComponent 
+                city={this.state.city}
+                state={this.state.state}
+                getCoordinates={this.getCoordinates}
+              />
+              <div>
+                {this.state.searchInfo.length > 0 ? this.state.searchInfo.filter((query, i) => (i <= 2)).map(item => {
+                  return (
+                    <div className="article" dangerouslySetInnerHTML={this.createMarkup(item.snippet)} />
+                  )
+                }) : null}
+              </div>
+            </div>
             <div className="mapContainer" ref={el => this.mapContainer = el}>
             <FontAwesomeIcon icon={faExpand} onClick={this.showFullScreen} className="icon"/>
             </div>
